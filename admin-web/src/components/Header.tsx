@@ -1,3 +1,4 @@
+"use client";
 import { Bell, Search, Globe, ChevronDown, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 
