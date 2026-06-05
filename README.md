@@ -80,6 +80,29 @@ You can switch between the Tenant Dashboard and Security Guard dashboard directl
 1. Run `flutter build apk --release` and `flutter build ipa`.
 2. Distribute through Google Play Console and Apple App Store Connect.
 
+## Multi-Developer & Team Sync Guidelines
+
+To support multiple teams working from different desktops, follow these guidelines to keep your code in sync and avoid merge conflicts:
+
+### 1. Daily Sync Routine
+- **Pull Latest Changes**: Always run `git pull origin main` before starting any development work.
+- **Commit & Push Often**: Push small, logical commits to feature branches (e.g., `git checkout -b feature/your-feature`) and create Pull Requests (PRs) on GitHub rather than pushing directly to `main`.
+
+### 2. Isolated Environment Setup (Ignored Files)
+Local settings and databases are excluded from Git via `.gitignore` to prevent developers from overwriting each other's local state:
+- **Local SQLite Database**: The SQLite database (`backend/vms_local.db`) is ignored. When cloning the repository on a new machine, run:
+  ```bash
+  cd backend
+  # Run the seed script to create and seed your local SQLite database:
+  .\venv\Scripts\python.exe seed_sqlite.py
+  ```
+- **Dependencies**: After pulling new changes, ensure dependencies are updated:
+  - Backend: `pip install -r requirements.txt`
+  - Admin Web: `npm install`
+  - Mobile App: `flutter pub get`
+- **Secrets & Local IPs**: Credentials, keystores, and local testing configurations (like the local IP address on the mobile login screen) should remain local and not be committed.
+
 ## Security & Multitenancy
 - **Authentication**: JWT based using bcrypt hashing. Role validation (`super_admin`, `community_admin`, `tenant`, `guard`) restricts endpoints.
 - **Multitenancy**: Data isolation is enforced at the database logic level using a mandatory `community_id` column for all community-specific tables, filtered in the API tier.
+
