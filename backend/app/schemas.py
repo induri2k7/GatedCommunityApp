@@ -64,3 +64,20 @@ class Visitor(VisitorBase):
 
     class Config:
         from_attributes = True
+
+class AnnouncementBase(BaseModel):
+    title: str
+    content: Optional[str] = None
+
+class AnnouncementCreate(AnnouncementBase):
+    pass
+
+class Announcement(AnnouncementBase):
+    id: int
+    community_id: int
+    author_id: Optional[int] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
