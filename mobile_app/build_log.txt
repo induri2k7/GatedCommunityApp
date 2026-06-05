@@ -1,0 +1,4 @@
+﻿
+Running Gradle task 'assembleRelease'...                        
+Error: Unable to find git in your PATH. 
+Running Gradle task 'assembleRelease'...                         2,000ms

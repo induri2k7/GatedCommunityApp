@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: vms_user
+      POSTGRES_PASSWORD: vms_password
+      POSTGRES_DB: vms_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://vms_user:vms_password@db:5432/vms_db
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=supersecretkey-change-me-in-prod
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./backend:/app
+
+volumes:
+  postgres_data:
